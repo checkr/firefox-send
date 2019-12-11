@@ -5,6 +5,7 @@ const config = require('../config');
 const routes = require('../routes');
 const pages = require('../routes/pages');
 const expressWs = require('@dannycoates/express-ws');
+const morgan = require('morgan');
 
 if (config.sentry_dsn) {
   Sentry.init({ dsn: config.sentry_dsn });
@@ -28,5 +29,7 @@ app.use(
 );
 
 app.use(pages.notfound);
+
+app.use(morgan(config.log_format));
 
 app.listen(config.listen_port, config.listen_address);
