@@ -222,8 +222,8 @@ const conf = convict({
     env: 'STATSD_HOST'
   },
   statsd_port: {
-    format: String,
-    default: '8124',
+    format: 'port',
+    default: 8125,
     env: 'STATSD_PORT'
   },
   statsd_prefix: {
