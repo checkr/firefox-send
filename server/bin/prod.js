@@ -17,6 +17,8 @@ expressWs(app, null, { perMessageDeflate: false });
 routes(app);
 app.ws('/api/ws', require('../routes/ws'));
 
+app.use(morgan(config.log_format));
+
 app.use(
   express.static(path.resolve(__dirname, '../../dist/'), {
     setHeaders: function(res, path) {
@@ -29,7 +31,5 @@ app.use(
 );
 
 app.use(pages.notfound);
-
-app.use(morgan(config.log_format));
 
 app.listen(config.listen_port, config.listen_address);
