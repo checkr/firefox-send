@@ -31,6 +31,7 @@ function sendToStatsd(data) {
       metric_name += `_${e.event_properties.status}`;
     }
 
+    console.log('event: ' + metric_name);
     client.increment(metric_name);
   });
 }
@@ -44,6 +45,7 @@ module.exports = async function(req, res) {
 
     res.sendStatus(status);
   } catch (e) {
+    console.log(e);
     res.sendStatus(500);
   }
 };
