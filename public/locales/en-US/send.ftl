@@ -56,7 +56,8 @@ passwordSetError = This password could not be set
 -firefox = Firefox
 -mozilla = Mozilla
 
-introTitle = Private, simple, and secure.
+introTitle =  Private, simple,
+introTitle2 = and secure.
 introDescription = Share files securely with end-to-end encryption and links that automatically expire to limit your risk and protect your privacy.
 notifyUploadEncryptDone = Your file is encrypted and ready to send.
 # downloadCount is from the downloadCount string and timespan is a timespanMinutes string. ex. 'Expires after 2 downloads or 25 minutes'
