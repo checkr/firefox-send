@@ -8,7 +8,8 @@ module.exports.empty = function intro(state) {
     >
       <div class="mt-12 flex flex-col h-full">
         <h1 class="text-3xl font-bold md:pb-2">
-          ${state.translate('introTitle')}
+          ${state.translate('introTitle')}<br />
+          ${state.translate('introTitle2')}
         </h1>
         <p class="max-w-sm leading-loose mt-6 md:mt-2 md:pr-14">
           ${state.translate('introDescription')}
@@ -26,7 +27,8 @@ module.exports.upload = function intro(state) {
     >
       <div class="mt-12 flex flex-col h-full">
         <h1 class="text-3xl font-bold md:pb-2">
-          ${state.translate('introTitle')}
+          ${state.translate('introTitle')}<br />
+          ${state.translate('introTitle2')}
         </h1>
         <p class="max-w-sm leading-loose mt-6 md:mt-2 md:pr-14">
           ${state.translate('introDescription')}
