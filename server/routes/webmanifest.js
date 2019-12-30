@@ -14,7 +14,7 @@ module.exports = function(req, res) {
       {
         src: assets.get('checkr_logo_white.png'),
         type: 'image/png',
-        sizes: '512x512'
+        sizes: '1200x400'
       }
     ],
     start_url: '/',
