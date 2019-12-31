@@ -1,5 +1,4 @@
 const crypto = require('crypto');
-const geoip = require('fxa-geodb')();
 const fetch = require('node-fetch');
 const config = require('./config');
 const pkg = require('../package.json');
@@ -21,12 +20,8 @@ function userId(fileId, ownerId) {
   return hash.digest('hex').substring(32);
 }
 
-function location(ip) {
-  try {
-    return geoip(ip);
-  } catch (e) {
-    return {};
-  }
+function location(_ip) {
+  return {};
 }
 
 function statUploadEvent(data) {
