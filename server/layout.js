@@ -33,7 +33,6 @@ module.exports = function(state, body = '') {
         <meta name="theme-color" content="#220033" />
         <meta name="msapplication-TileColor" content="#220033" />
 
-        <link rel="manifest" href="/app.webmanifest" />
         <link rel="stylesheet" type="text/css" href="/inter.css" />
         <link
           rel="stylesheet"
