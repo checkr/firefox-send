@@ -59,7 +59,7 @@ function passwordToggle(state) {
 
 function passwordLabel(state) {
   return html`
-    <div class="inline-block mr-3">
+    <div class="inline-block ml-3">
       <label for="password-input">
         ${state.translate('addPassword')}
       </label>
@@ -67,12 +67,50 @@ function passwordLabel(state) {
   `;
 }
 
+function passwordConfirm(state) {
+  return html`
+    <div class="inline-block ml-3">
+      <label for="password-confirm">
+        ${state.translate('confirmPassword')}
+      </label>
+    </div>
+  `;
+}
+
+function passwordShowToggle(state) {
+  return html`
+    <div class="checkbox mr-3">
+      <input
+        id="show-password"
+        type="checkbox"
+        autocomplete="off"
+        onchange="${toggleShowPassword}"
+      />
+      <label for="show-password">
+        ${state.translate('showPassword')}
+      </label>
+    </div>
+  `;
+
+  function toggleShowPassword(event) {
+    event.stopPropagation();
+    const checked = event.target.checked;
+    const input = document.getElementById('password-input');
+    const inputConfirm = document.getElementById('password-confirm');
+    if (checked) {
+      input.setAttribute('type', 'text');
+      inputConfirm.setAttribute('type', 'text');
+    } else {
+      input.setAttribute('type', 'password');
+      inputConfirm.setAttribute('type', 'password');
+    }
+  }
+}
+
 function password(state, emit) {
   return html`
     <div class="mb-2 px-1">
-      ${state.LIMITS.PASSWORD_REQUIRED
-        ? passwordLabel(state)
-        : passwordToggle(state)}
+      ${passwordShowToggle(state)}
       <input
         id="password-input"
         class="${state.LIMITS.PASSWORD_REQUIRED || state.archive.password
@@ -86,6 +124,25 @@ function password(state, emit) {
         placeholder="${state.translate('unlockInputPlaceholder')}"
         value="${state.archive.password || ''}"
       />
+      ${state.LIMITS.PASSWORD_REQUIRED
+        ? passwordLabel(state)
+        : passwordToggle(state)}
+
+      <input
+        id="password-confirm"
+        class="${state.LIMITS.PASSWORD_REQUIRED || state.archive.password
+          ? ''
+          : 'invisible'} border rounded focus:border-blue-60 leading-normal my-1 py-1 px-2 h-8 dark:bg-grey-80"
+        autocomplete="off"
+        maxlength="32"
+        type="password"
+        oninput="${inputChanged}"
+        onfocus="${focused}"
+        placeholder="${state.translate('unlockInputPlaceholder')}"
+        value="${state.archive.password || ''}"
+      />
+      ${passwordConfirm(state)}
+
       <label
         id="password-msg"
         for="password-input"
@@ -100,13 +157,22 @@ function password(state, emit) {
     const uploadBtn = document.getElementById('upload-btn');
     const password = passwordInput.value;
 
+    const passwordConfirmInput = document.getElementById('password-confirm');
+    const passwordConfirm = passwordConfirmInput.value;
+
     const errors = passwordValidate(
       password,
       state.LIMITS.PASSWORD_REQUIREMENTS_LIST
     );
-    const errorMsg = errors
-      .map(error => state.translate(error.translationKey, error.args))
-      .reduce((current, next) => current + '\r\n' + next, '');
+    let errorMsg = errors.map(error =>
+      state.translate(error.translationKey, error.args)
+    );
+
+    if (passwordConfirm != password) {
+      errorMsg.push(state.translate('passwordNotMatch'));
+    }
+    errorMsg = errorMsg.reduce((current, next) => current + '\r\n' + next, '');
+
     if (errorMsg != '') {
       pwdmsg.textContent = errorMsg;
       uploadBtn.classList.add('btn-inactive');
