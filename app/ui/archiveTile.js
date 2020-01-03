@@ -53,11 +53,11 @@ function passwordToggle(state, emit) {
     const passwordContainer = document.getElementById('password-container');
 
     if (checked) {
-      passwordContainer.classList.remove('invisible', 'h-0');
+      passwordContainer.classList.remove('invisible', 'hidden');
       input.focus();
     } else {
       passwordContainer.classList.add('invisible');
-      passwordContainer.classList.add('h-0');
+      passwordContainer.classList.add('hidden');
       input.value = '';
       inputConfirm.value = '';
       document.getElementById('password-msg').textContent = '';
@@ -138,7 +138,7 @@ function password(state, emit) {
         id="password-container"
         class="${state.LIMITS.PASSWORD_REQUIRED || state.archive.password
           ? ''
-          : 'invisible h-0'}"
+          : 'invisible hidden'}"
       >
         <table class="table-auto" style="width: 100%">
           <tbody>
