@@ -98,7 +98,6 @@ body {
   @apply bg-blue-50;
   @apply border-blue-50;
 
-  background-image: url('../assets/lock.svg');
   background-position: center;
   background-size: 1.25rem;
   background-repeat: no-repeat;
@@ -112,11 +111,26 @@ body {
   @apply bg-blue-50;
   @apply border-blue-50;
 
-  background-image: url('../assets/lock.svg');
   background-position: center;
   background-size: 1.25rem;
   background-repeat: no-repeat;
   cursor: auto;
+}
+
+#checkbox-require-password > input:checked + label::before {
+  background-image: url('../assets/lock.svg');
+}
+
+#checkbox-require-password > input:disabled + label::before {
+  background-image: url('../assets/lock.svg');
+}
+
+#checkbox-show-password > input:checked + label::before {
+  background-image: url('../assets/white-checkmark.png');
+}
+
+#checkbox-show-password > input:disabled + label::before {
+  background-image: url('../assets/white-checkmark.png');
 }
 
 details {

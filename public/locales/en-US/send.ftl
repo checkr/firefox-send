@@ -47,6 +47,7 @@ minPasswordLength = Minimum password length: { $length }
 characterClass = Must contain at least { $count } { $classDescription }
 # A short status message shown when there was an error setting the password
 passwordSetError = This password could not be set
+passwordNotMatch = The password must be entered twice correctly
 
 ## Send version 2 strings
 
@@ -120,7 +121,10 @@ dragAndDropFiles = Drag and drop files
 # the second part of the string 'Drag and drop files or click to send up to 1GB'
 # $size is the size of the file, displayed using the fileSize message as format (e.g. "2.5MB")
 orClickWithSize = or click to send up to { $size }
+showPassword = Show Password
 addPassword = Protect with password
+passwordLabel = Password
+confirmPassword = Confirm
 emailPlaceholder = Enter your email
 # $size is the size of the file, displayed using the fileSize message as format (e.g. "2.5MB")
 signInSizeBump = Sign in to send up to { $size }
