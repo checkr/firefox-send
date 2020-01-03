@@ -131,7 +131,7 @@ function password(state, emit) {
   }
 
   return html`
-    <div class="mb-2 px-1">
+    <div class="mt-2 mb-2 px-1">
       ${state.LIMITS.PASSWORD_REQUIRED ? '' : passwordToggle(state, emit)}
 
       <div
