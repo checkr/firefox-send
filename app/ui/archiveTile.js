@@ -47,26 +47,17 @@ function passwordToggle(state, emit) {
   function togglePasswordInput(event) {
     event.stopPropagation();
     const checked = event.target.checked;
-    const elements = [
-      'password-input',
-      'password-label',
-      'password-confirm',
-      'password-confirm-label',
-      'checkbox-show-password'
-    ];
 
     const input = document.getElementById('password-input');
     const inputConfirm = document.getElementById('password-confirm');
+    const passwordContainer = document.getElementById('password-container');
 
     if (checked) {
-      elements.forEach(function(elementId) {
-        document.getElementById(elementId).classList.remove('invisible');
-      });
+      passwordContainer.classList.remove('invisible', 'h-0');
       input.focus();
     } else {
-      elements.forEach(function(elementId) {
-        document.getElementById(elementId).classList.add('invisible');
-      });
+      passwordContainer.classList.add('invisible');
+      passwordContainer.classList.add('h-0');
       input.value = '';
       inputConfirm.value = '';
       document.getElementById('password-msg').textContent = '';
@@ -81,44 +72,9 @@ function passwordToggle(state, emit) {
   }
 }
 
-function passwordLabel(state) {
-  return html`
-    <div
-      id="password-label"
-      class="${state.LIMITS.PASSWORD_REQUIRED || state.archive.password
-        ? ''
-        : 'invisible'} inline-block mr-2"
-    >
-      <label for="password-input">
-        ${state.translate('passwordLabel')}
-      </label>
-    </div>
-  `;
-}
-
-function passwordConfirm(state) {
-  return html`
-    <div
-      id="password-confirm-label"
-      class="${state.LIMITS.PASSWORD_REQUIRED || state.archive.password
-        ? ''
-        : 'invisible'} inline-block mr-5"
-    >
-      <label for="password-confirm">
-        ${state.translate('confirmPassword')}
-      </label>
-    </div>
-  `;
-}
-
 function passwordShowToggle(state) {
   return html`
-    <div
-      id="checkbox-show-password"
-      class="${state.LIMITS.PASSWORD_REQUIRED || state.archive.password
-        ? ''
-        : 'invisible'} checkbox mr-3 mb-1"
-    >
+    <div id="checkbox-show-password" class="checkbox mr-3 mb-1">
       <input
         id="show-password"
         type="checkbox"
@@ -147,41 +103,74 @@ function passwordShowToggle(state) {
 }
 
 function password(state, emit) {
+  function passwordLabel(state, labelId, labelFor, label) {
+    return html`
+      <div id="${labelId}" class="inline-block mr-2">
+        <label for="${labelFor}">
+          ${state.translate(label)}
+        </label>
+      </div>
+    `;
+  }
+
+  function passwordInput(state, inputId) {
+    return html`
+      <input
+        id="${inputId}"
+        class="border rounded focus:border-blue-60 leading-normal my-1 py-1 px-2 h-8 dark:bg-grey-100"
+        style="width: 100%"
+        autocomplete="off"
+        maxlength="32"
+        type="password"
+        oninput="${inputChanged}"
+        onfocus="${focused}"
+        placeholder="${state.translate('unlockInputPlaceholder')}"
+        value="${state.archive.password || ''}"
+      />
+    `;
+  }
+
   return html`
     <div class="mb-2 px-1">
-      <div>
-        ${state.LIMITS.PASSWORD_REQUIRED ? '' : passwordToggle(state, emit)}
-        ${passwordShowToggle(state)} ${passwordLabel(state)}
-        <input
-          id="password-input"
-          class="${state.LIMITS.PASSWORD_REQUIRED || state.archive.password
-            ? ''
-            : 'invisible'} border rounded focus:border-blue-60 leading-normal my-1 py-1 px-2 h-8 dark:bg-grey-100"
-          autocomplete="off"
-          maxlength="32"
-          type="password"
-          oninput="${inputChanged}"
-          onfocus="${focused}"
-          placeholder="${state.translate('unlockInputPlaceholder')}"
-          value="${state.archive.password || ''}"
-        />
-      </div>
+      ${state.LIMITS.PASSWORD_REQUIRED ? '' : passwordToggle(state, emit)}
 
-      <div>
-        ${passwordConfirm(state)}
-        <input
-          id="password-confirm"
-          class="${state.LIMITS.PASSWORD_REQUIRED || state.archive.password
-            ? ''
-            : 'invisible'} border rounded focus:border-blue-60 leading-normal my-1 py-1 px-2 h-8 dark:bg-grey-100"
-          autocomplete="off"
-          maxlength="32"
-          type="password"
-          oninput="${inputChanged}"
-          onfocus="${focused}"
-          placeholder="${state.translate('unlockInputPlaceholder')}"
-          value="${state.archive.password || ''}"
-        />
+      <div
+        id="password-container"
+        class="${state.LIMITS.PASSWORD_REQUIRED || state.archive.password
+          ? ''
+          : 'invisible h-0'}"
+      >
+        ${passwordShowToggle(state)}
+        <table class="table-auto" style="width: 100%">
+          <tbody>
+            <tr>
+              <td class="px-1 py-1 text-right">
+                ${passwordLabel(
+                  state,
+                  'password-label',
+                  'password-input',
+                  'passwordLabel'
+                )}
+              </td>
+              <td class=" px-1 py-1">
+                ${passwordInput(state, 'password-input')}
+              </td>
+            </tr>
+            <tr>
+              <td class="px-1 py-1 text-right">
+                ${passwordLabel(
+                  state,
+                  'password-confirm-label',
+                  'password-confirm',
+                  'confirmPassword'
+                )}
+              </td>
+              <td class="px-1 py-1">
+                ${passwordInput(state, 'password-confirm')}
+              </td>
+            </tr>
+          </tbody>
+        </table>
       </div>
 
       <label
