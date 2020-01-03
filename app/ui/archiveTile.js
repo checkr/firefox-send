@@ -25,9 +25,12 @@ function expiryInfo(translate, archive) {
   );
 }
 
-function passwordToggle(state) {
+function passwordToggle(state, emit) {
   return html`
-    <div class="checkbox inline-block mr-3">
+    <div
+      id="checkbox-require-password"
+      class="checkbox inline-block mr-3 mb-3 mt-1"
+    >
       <input
         id="add-password"
         type="checkbox"
@@ -44,24 +47,50 @@ function passwordToggle(state) {
   function togglePasswordInput(event) {
     event.stopPropagation();
     const checked = event.target.checked;
+    const elements = [
+      'password-input',
+      'password-label',
+      'password-confirm',
+      'password-confirm-label',
+      'checkbox-show-password'
+    ];
+
     const input = document.getElementById('password-input');
+    const inputConfirm = document.getElementById('password-confirm');
+
     if (checked) {
-      input.classList.remove('invisible');
+      elements.forEach(function(elementId) {
+        document.getElementById(elementId).classList.remove('invisible');
+      });
       input.focus();
     } else {
-      input.classList.add('invisible');
+      elements.forEach(function(elementId) {
+        document.getElementById(elementId).classList.add('invisible');
+      });
       input.value = '';
+      inputConfirm.value = '';
       document.getElementById('password-msg').textContent = '';
       state.archive.password = null;
+
+      const pwdmsg = document.getElementById('password-msg');
+      const uploadBtn = document.getElementById('upload-btn');
+      pwdmsg.textContent = '';
+      uploadBtn.classList.remove('btn-inactive');
+      uploadBtn.onclick = clickUpload(state, emit);
     }
   }
 }
 
 function passwordLabel(state) {
   return html`
-    <div class="inline-block mr-2">
+    <div
+      id="password-label"
+      class="${state.LIMITS.PASSWORD_REQUIRED || state.archive.password
+        ? ''
+        : 'invisible'} inline-block mr-2"
+    >
       <label for="password-input">
-        ${state.translate('addPassword')}
+        ${state.translate('passwordLabel')}
       </label>
     </div>
   `;
@@ -69,7 +98,12 @@ function passwordLabel(state) {
 
 function passwordConfirm(state) {
   return html`
-    <div class="inline-block mr-5">
+    <div
+      id="password-confirm-label"
+      class="${state.LIMITS.PASSWORD_REQUIRED || state.archive.password
+        ? ''
+        : 'invisible'} inline-block mr-5"
+    >
       <label for="password-confirm">
         ${state.translate('confirmPassword')}
       </label>
@@ -79,7 +113,12 @@ function passwordConfirm(state) {
 
 function passwordShowToggle(state) {
   return html`
-    <div class="checkbox mr-3">
+    <div
+      id="checkbox-show-password"
+      class="${state.LIMITS.PASSWORD_REQUIRED || state.archive.password
+        ? ''
+        : 'invisible'} checkbox mr-3 mb-1"
+    >
       <input
         id="show-password"
         type="checkbox"
@@ -111,10 +150,8 @@ function password(state, emit) {
   return html`
     <div class="mb-2 px-1">
       <div>
-        ${passwordShowToggle(state)}
-        ${state.LIMITS.PASSWORD_REQUIRED
-          ? passwordLabel(state)
-          : passwordToggle(state)}
+        ${state.LIMITS.PASSWORD_REQUIRED ? '' : passwordToggle(state, emit)}
+        ${passwordShowToggle(state)} ${passwordLabel(state)}
         <input
           id="password-input"
           class="${state.LIMITS.PASSWORD_REQUIRED || state.archive.password
@@ -156,6 +193,7 @@ function password(state, emit) {
   `;
 
   function inputChanged() {
+    const passwordCheckbox = document.getElementById('add-password');
     const passwordInput = document.getElementById('password-input');
     const pwdmsg = document.getElementById('password-msg');
     const uploadBtn = document.getElementById('upload-btn');
@@ -177,6 +215,7 @@ function password(state, emit) {
     }
     errorMsg = errorMsg.reduce((current, next) => current + '\r\n' + next, '');
 
+    console.log(passwordCheckbox);
     if (errorMsg != '') {
       pwdmsg.textContent = errorMsg;
       uploadBtn.classList.add('btn-inactive');

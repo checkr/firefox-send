@@ -122,7 +122,8 @@ dragAndDropFiles = Drag and drop files
 # $size is the size of the file, displayed using the fileSize message as format (e.g. "2.5MB")
 orClickWithSize = or click to send up to { $size }
 showPassword = Show Password
-addPassword = Password
+addPassword = Protect with password
+passwordLabel = Password
 confirmPassword = Confirm
 emailPlaceholder = Enter your email
 # $size is the size of the file, displayed using the fileSize message as format (e.g. "2.5MB")
