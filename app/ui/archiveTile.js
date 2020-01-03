@@ -29,7 +29,7 @@ function passwordToggle(state, emit) {
   return html`
     <div
       id="checkbox-require-password"
-      class="checkbox inline-block mr-3 mb-3 mt-1"
+      class="checkbox inline-block mr-3 mb-1 mt-1"
     >
       <input
         id="add-password"
@@ -74,7 +74,7 @@ function passwordToggle(state, emit) {
 
 function passwordShowToggle(state) {
   return html`
-    <div id="checkbox-show-password" class="checkbox mr-3 mb-1">
+    <div id="checkbox-show-password" class="checkbox mr-3 mt-2">
       <input
         id="show-password"
         type="checkbox"
@@ -140,11 +140,10 @@ function password(state, emit) {
           ? ''
           : 'invisible h-0'}"
       >
-        ${passwordShowToggle(state)}
         <table class="table-auto" style="width: 100%">
           <tbody>
             <tr>
-              <td class="px-1 py-1 text-right">
+              <td class="text-right">
                 ${passwordLabel(
                   state,
                   'password-label',
@@ -157,7 +156,7 @@ function password(state, emit) {
               </td>
             </tr>
             <tr>
-              <td class="px-1 py-1 text-right">
+              <td class="text-right">
                 ${passwordLabel(
                   state,
                   'password-confirm-label',
@@ -171,6 +170,7 @@ function password(state, emit) {
             </tr>
           </tbody>
         </table>
+        ${passwordShowToggle(state)}
       </div>
 
       <label

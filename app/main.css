@@ -126,11 +126,11 @@ body {
 }
 
 #checkbox-show-password > input:checked + label::before {
-  background-image: url('../assets/show-hide-icon.png');
+  background-image: url('../assets/white-checkmark.png');
 }
 
 #checkbox-show-password > input:disabled + label::before {
-  background-image: url('../assets/show-hide-icon.png');
+  background-image: url('../assets/white-checkmark.png');
 }
 
 details {
