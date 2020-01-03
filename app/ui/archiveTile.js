@@ -59,7 +59,7 @@ function passwordToggle(state) {
 
 function passwordLabel(state) {
   return html`
-    <div class="inline-block ml-3">
+    <div class="inline-block mr-2">
       <label for="password-input">
         ${state.translate('addPassword')}
       </label>
@@ -69,7 +69,7 @@ function passwordLabel(state) {
 
 function passwordConfirm(state) {
   return html`
-    <div class="inline-block ml-3">
+    <div class="inline-block mr-5">
       <label for="password-confirm">
         ${state.translate('confirmPassword')}
       </label>
@@ -110,38 +110,42 @@ function passwordShowToggle(state) {
 function password(state, emit) {
   return html`
     <div class="mb-2 px-1">
-      ${passwordShowToggle(state)}
-      <input
-        id="password-input"
-        class="${state.LIMITS.PASSWORD_REQUIRED || state.archive.password
-          ? ''
-          : 'invisible'} border rounded focus:border-blue-60 leading-normal my-1 py-1 px-2 h-8 dark:bg-grey-80"
-        autocomplete="off"
-        maxlength="32"
-        type="password"
-        oninput="${inputChanged}"
-        onfocus="${focused}"
-        placeholder="${state.translate('unlockInputPlaceholder')}"
-        value="${state.archive.password || ''}"
-      />
-      ${state.LIMITS.PASSWORD_REQUIRED
-        ? passwordLabel(state)
-        : passwordToggle(state)}
+      <div>
+        ${passwordShowToggle(state)}
+        ${state.LIMITS.PASSWORD_REQUIRED
+          ? passwordLabel(state)
+          : passwordToggle(state)}
+        <input
+          id="password-input"
+          class="${state.LIMITS.PASSWORD_REQUIRED || state.archive.password
+            ? ''
+            : 'invisible'} border rounded focus:border-blue-60 leading-normal my-1 py-1 px-2 h-8 dark:bg-grey-100"
+          autocomplete="off"
+          maxlength="32"
+          type="password"
+          oninput="${inputChanged}"
+          onfocus="${focused}"
+          placeholder="${state.translate('unlockInputPlaceholder')}"
+          value="${state.archive.password || ''}"
+        />
+      </div>
 
-      <input
-        id="password-confirm"
-        class="${state.LIMITS.PASSWORD_REQUIRED || state.archive.password
-          ? ''
-          : 'invisible'} border rounded focus:border-blue-60 leading-normal my-1 py-1 px-2 h-8 dark:bg-grey-80"
-        autocomplete="off"
-        maxlength="32"
-        type="password"
-        oninput="${inputChanged}"
-        onfocus="${focused}"
-        placeholder="${state.translate('unlockInputPlaceholder')}"
-        value="${state.archive.password || ''}"
-      />
-      ${passwordConfirm(state)}
+      <div>
+        ${passwordConfirm(state)}
+        <input
+          id="password-confirm"
+          class="${state.LIMITS.PASSWORD_REQUIRED || state.archive.password
+            ? ''
+            : 'invisible'} border rounded focus:border-blue-60 leading-normal my-1 py-1 px-2 h-8 dark:bg-grey-100"
+          autocomplete="off"
+          maxlength="32"
+          type="password"
+          oninput="${inputChanged}"
+          onfocus="${focused}"
+          placeholder="${state.translate('unlockInputPlaceholder')}"
+          value="${state.archive.password || ''}"
+        />
+      </div>
 
       <label
         id="password-msg"

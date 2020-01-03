@@ -95,10 +95,9 @@ body {
 }
 
 .checkbox > input:checked + label::before {
-  @apply bg-blue-50;
   @apply border-blue-50;
 
-  background-image: url('../assets/lock.svg');
+  background-image: url('../assets/show-hide-icon.png');
   background-position: center;
   background-size: 1.25rem;
   background-repeat: no-repeat;
@@ -109,10 +108,9 @@ body {
 }
 
 .checkbox > input:disabled + label::before {
-  @apply bg-blue-50;
   @apply border-blue-50;
 
-  background-image: url('../assets/lock.svg');
+  background-image: url('../assets/show-hide-icon.png');
   background-position: center;
   background-size: 1.25rem;
   background-repeat: no-repeat;
