@@ -105,7 +105,7 @@ function passwordShowToggle(state) {
 function password(state, emit) {
   function passwordLabel(state, labelId, labelFor, label) {
     return html`
-      <div id="${labelId}" class="inline-block mr-2">
+      <div id="${labelId}" class="w-24 inline-block">
         <label for="${labelFor}">
           ${state.translate(label)}
         </label>
@@ -118,7 +118,6 @@ function password(state, emit) {
       <input
         id="${inputId}"
         class="border rounded focus:border-blue-60 leading-normal my-1 py-1 px-2 h-8 dark:bg-grey-100 w-full"
-        style="max-width: 23rem;"
         autocomplete="off"
         maxlength="32"
         type="password"
@@ -131,44 +130,43 @@ function password(state, emit) {
   }
 
   return html`
-    <div class="mt-2 mb-2 px-1">
+    <div class="mb-2 px-1">
       ${state.LIMITS.PASSWORD_REQUIRED ? '' : passwordToggle(state, emit)}
 
       <div
         id="password-container"
-        class="${state.LIMITS.PASSWORD_REQUIRED || state.archive.password
+        class="flex flex-col ${state.LIMITS.PASSWORD_REQUIRED ||
+        state.archive.password
           ? ''
           : 'invisible hidden'}"
       >
-        <div class="flex items-center">
-          <div class="flex-none">
-            ${passwordLabel(
-              state,
-              'password-label',
-              'password-input',
-              'passwordLabel'
-            )}
-          </div>
-          <div class="flex-grow text-right">
+        <div class="flex flex-row items-center">
+          ${passwordLabel(
+            state,
+            'password-label',
+            'password-input',
+            'passwordLabel'
+          )}
+          <div class="flex-grow">
             ${passwordInput(state, 'password-input')}
           </div>
         </div>
 
-        <div class="flex items-center">
-          <div class="flex-none">
-            ${passwordLabel(
-              state,
-              'password-confirm-label',
-              'password-confirm',
-              'confirmPassword'
-            )}
-          </div>
-          <div class="flex-grow text-right">
+        <div class="flex flex-row items-center">
+          ${passwordLabel(
+            state,
+            'password-confirm-label',
+            'password-confirm',
+            'confirmPassword'
+          )}
+          <div class="flex-grow">
             ${passwordInput(state, 'password-confirm')}
           </div>
         </div>
 
-        ${passwordShowToggle(state)}
+        <div>
+          ${passwordShowToggle(state)}
+        </div>
       </div>
 
       <label
