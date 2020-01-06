@@ -117,8 +117,8 @@ function password(state, emit) {
     return html`
       <input
         id="${inputId}"
-        class="border rounded focus:border-blue-60 leading-normal my-1 py-1 px-2 h-8 dark:bg-grey-100"
-        style="width: 100%"
+        class="border rounded focus:border-blue-60 leading-normal my-1 py-1 px-2 h-8 dark:bg-grey-100 w-full"
+        style="max-width: 23rem;"
         autocomplete="off"
         maxlength="32"
         type="password"
@@ -140,36 +140,34 @@ function password(state, emit) {
           ? ''
           : 'invisible hidden'}"
       >
-        <table class="table-auto" style="width: 100%">
-          <tbody>
-            <tr>
-              <td class="text-right">
-                ${passwordLabel(
-                  state,
-                  'password-label',
-                  'password-input',
-                  'passwordLabel'
-                )}
-              </td>
-              <td class=" px-1 py-1">
-                ${passwordInput(state, 'password-input')}
-              </td>
-            </tr>
-            <tr>
-              <td class="text-right">
-                ${passwordLabel(
-                  state,
-                  'password-confirm-label',
-                  'password-confirm',
-                  'confirmPassword'
-                )}
-              </td>
-              <td class="px-1 py-1">
-                ${passwordInput(state, 'password-confirm')}
-              </td>
-            </tr>
-          </tbody>
-        </table>
+        <div class="flex items-center">
+          <div class="flex-none">
+            ${passwordLabel(
+              state,
+              'password-label',
+              'password-input',
+              'passwordLabel'
+            )}
+          </div>
+          <div class="flex-grow text-right">
+            ${passwordInput(state, 'password-input')}
+          </div>
+        </div>
+
+        <div class="flex items-center">
+          <div class="flex-none">
+            ${passwordLabel(
+              state,
+              'password-confirm-label',
+              'password-confirm',
+              'confirmPassword'
+            )}
+          </div>
+          <div class="flex-grow text-right">
+            ${passwordInput(state, 'password-confirm')}
+          </div>
+        </div>
+
         ${passwordShowToggle(state)}
       </div>
 
