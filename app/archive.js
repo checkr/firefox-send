@@ -20,6 +20,7 @@ export default class Archive {
     this.timeLimit = defaultTimeLimit;
     this.dlimit = 1;
     this.password = null;
+    this.passwordValid = null;
   }
 
   get name() {
@@ -79,5 +80,6 @@ export default class Archive {
     this.dlimit = 1;
     this.timeLimit = this.defaultTimeLimit;
     this.password = null;
+    this.passwordValid = null;
   }
 }
