@@ -1,5 +1,5 @@
-# Firefox Send is a brand name and should not be localized.
-title = Firefox Send
+# Sendr is a brand name and should not be localized.
+title = Sendr
 siteFeedback = Feedback
 importingFile = Importing…
 encryptingFile = Encrypting…
@@ -16,15 +16,15 @@ copiedUrl = Copied!
 unlockInputPlaceholder = Password
 unlockButtonLabel = Unlock
 downloadButtonLabel = Download
-downloadFinish = Download complete
+downloadFinish = Download complete.
 fileSizeProgress = ({ $partialSize } of { $totalSize })
-sendYourFilesLink = Try Firefox Send
+sendYourFilesLink = Try Sendr
 errorPageHeader = Something went wrong!
 fileTooBig = That file is too big to upload. It should be less than { $size }
 linkExpiredAlt = Link expired
 notSupportedHeader = Your browser is not supported.
 notSupportedLink = Why is my browser not supported?
-notSupportedOutdatedDetail = Unfortunately this version of Firefox does not support the web technology that powers Firefox Send. You’ll need to update your browser.
+notSupportedOutdatedDetail = Unfortunately this version of Firefox does not support the web technology that powers Sendr. You’ll need to update your browser.
 updateFirefox = Update Firefox
 deletePopupCancel = Cancel
 deleteButtonHover = Delete
@@ -32,8 +32,8 @@ footerLinkLegal = Legal
 footerLinkPrivacy = Privacy
 footerLinkCookies = Cookies
 passwordTryAgain = Incorrect password. Try again.
-javascriptRequired = Firefox Send requires JavaScript
-whyJavascript = Why does Firefox Send require JavaScript?
+javascriptRequired = Sendr requires JavaScript
+whyJavascript = Why does Sendr require JavaScript?
 enableJavascript = Please enable JavaScript and try again.
 # A short representation of a countdown timer containing the number of hours and minutes remaining as digits, example "13h 47m"
 expiresHoursMinutes = { $hours }h { $minutes }m
@@ -41,20 +41,26 @@ expiresHoursMinutes = { $hours }h { $minutes }m
 expiresMinutes = { $minutes }m
 # A short status message shown when the user enters a long password
 maxPasswordLength = Maximum password length: { $length }
+# A short status message shown when the user enters a short password
+minPasswordLength = Minimum password length: { $length }
+# A short status message shown when the user enters a password that doesn't contain special characters
+characterClass = Must contain at least { $count } { $classDescription }
 # A short status message shown when there was an error setting the password
 passwordSetError = This password could not be set
+passwordNotMatch = The password must be entered twice correctly
 
 ## Send version 2 strings
 
-# Firefox Send, Send, Firefox, Mozilla are proper names and should not be localized
--send-brand = Firefox Send
--send-short-brand = Send
+# Sendr, Send, Firefox, Mozilla are proper names and should not be localized
+-send-brand = Sendr
+-send-short-brand = Sendr
 -firefox = Firefox
 -mozilla = Mozilla
 
-introTitle = Simple, private file sharing
-introDescription = { -send-brand } lets you share files with end-to-end encryption and a link that automatically expires. So you can keep what you share private and make sure your stuff doesn’t stay online forever.
-notifyUploadEncryptDone = Your file is encrypted and ready to send
+introTitle =  Private, simple,
+introTitle2 = and secure.
+introDescription = Share files securely with end-to-end encryption and links that automatically expire to limit your risk and protect your privacy.
+notifyUploadEncryptDone = Your file is encrypted and ready to send.
 # downloadCount is from the downloadCount string and timespan is a timespanMinutes string. ex. 'Expires after 2 downloads or 25 minutes'
 archiveExpiryInfo = Expires after { $downloadCount } or { $timespan }
 timespanMinutes = { $num ->
@@ -88,7 +94,7 @@ totalSize = Total size: { $size }
 # the next line after the colon contains a file name
 copyLinkDescription = Copy the link to share your file:
 copyLinkButton = Copy link
-downloadTitle = Download files
+downloadTitle = Download files.
 downloadDescription = This file was shared via { -send-brand } with end-to-end encryption and a link that automatically expires.
 trySendDescription = Try { -send-brand } for simple, safe file sharing.
 # count will always be > 10
@@ -115,11 +121,15 @@ dragAndDropFiles = Drag and drop files
 # the second part of the string 'Drag and drop files or click to send up to 1GB'
 # $size is the size of the file, displayed using the fileSize message as format (e.g. "2.5MB")
 orClickWithSize = or click to send up to { $size }
+showPassword = Show Password
 addPassword = Protect with password
+passwordLabel = Password
+confirmPassword = Confirm
 emailPlaceholder = Enter your email
 # $size is the size of the file, displayed using the fileSize message as format (e.g. "2.5MB")
 signInSizeBump = Sign in to send up to { $size }
 signInOnlyButton = Sign in
+signIn = Sign In
 accountBenefitTitle = Create a { -firefox } Account or sign in
 # $size is the size of the file, displayed using the fileSize message as format (e.g. "2.5MB")
 accountBenefitLargeFiles = Share files up to { $size }

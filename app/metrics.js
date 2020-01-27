@@ -11,7 +11,6 @@ const lang = locale();
 
 export default function initialize(state, emitter) {
   appState = state;
-
   emitter.on('DOMContentLoaded', () => {
     experiment = storage.enrolled;
     if (!appState.user.firstAction) {
@@ -78,7 +77,7 @@ async function addEvent(event_type, event_properties) {
       active_count: storage.files.length
     }
   });
-  if (events.length === 25) {
+  if (events.length === 1) {
     submitEvents();
   }
 }

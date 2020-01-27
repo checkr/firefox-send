@@ -65,7 +65,7 @@ const colors = {
   'blue-70': '#003eaa',
   'blue-60': '#0060df',
   'blue-50': '#0a84ff',
-  blue: '#0a84ff',
+  blue: '#043F93',
   'blue-40': '#45a1ff',
   'blue-30': '#99ccff',
   'blue-20': '#cce6ff',
@@ -109,8 +109,7 @@ module.exports = {
       sm: '576px',
       md: '768px',
       lg: '992px',
-      xl: '1200px',
-      dark: { raw: '(prefers-color-scheme: dark)' }
+      xl: '1200px'
     },
     fontFamily: {
       sans: [

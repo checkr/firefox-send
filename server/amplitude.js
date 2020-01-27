@@ -24,20 +24,11 @@ function userId(fileId, ownerId) {
   return hash.digest('hex').substring(32);
 }
 
-function location(ip) {
-  try {
-    return geoip(ip);
-  } catch (e) {
-    return {};
-  }
-}
-
 function statUploadEvent(data) {
-  const loc = location(data.ip);
   const event = {
     session_id: -1,
-    country: loc.country,
-    region: loc.state,
+    country: undefined,
+    region: undefined,
     user_id: userId(data.id, data.owner),
     app_version: pkg.version,
     time: truncateToHour(Date.now()),
@@ -57,11 +48,10 @@ function statUploadEvent(data) {
 }
 
 function statDownloadEvent(data) {
-  const loc = location(data.ip);
   const event = {
     session_id: -1,
-    country: loc.country,
-    region: loc.state,
+    country: undefined,
+    region: undefined,
     user_id: userId(data.id, data.owner),
     app_version: pkg.version,
     time: truncateToHour(Date.now()),
@@ -77,11 +67,10 @@ function statDownloadEvent(data) {
 }
 
 function statDeleteEvent(data) {
-  const loc = location(data.ip);
   const event = {
     session_id: -1,
-    country: loc.country,
-    region: loc.state,
+    country: undefined,
+    region: undefined,
     user_id: userId(data.id, data.owner),
     app_version: pkg.version,
     time: truncateToHour(Date.now()),
@@ -96,8 +85,7 @@ function statDeleteEvent(data) {
   return sendBatch([event]);
 }
 
-function clientEvent(event, ua, language, session_id, deltaT, platform, ip) {
-  const loc = location(ip);
+function clientEvent(event, ua, language, session_id, deltaT, platform, _ip) {
   const ep = event.event_properties || {};
   const up = event.user_properties || {};
   const event_properties = {
@@ -133,7 +121,8 @@ function clientEvent(event, ua, language, session_id, deltaT, platform, ip) {
   };
   return {
     app_version: pkg.version,
-    country: loc.country,
+    country: undefined,
+    region: undefined,
     device_id: event.device_id,
     event_properties,
     event_type: event.event_type,
@@ -141,7 +130,6 @@ function clientEvent(event, ua, language, session_id, deltaT, platform, ip) {
     os_name: ua.os.name,
     os_version: ua.os.version,
     platform,
-    region: loc.state,
     session_id,
     time: event.time + deltaT,
     user_id: event.user_id,

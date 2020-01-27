@@ -1,5 +1,4 @@
 /* global Android */
-
 const html = require('choo/html');
 const raw = require('choo/html/raw');
 const assets = require('../../common/assets');
@@ -12,6 +11,7 @@ const {
   timeLeft
 } = require('../utils');
 const expiryOptions = require('./expiryOptions');
+const { passwordValidate } = require('../passwordValidator');
 
 function expiryInfo(translate, archive) {
   const l10n = timeLeft(archive.expiresAt - Date.now());
@@ -25,36 +25,147 @@ function expiryInfo(translate, archive) {
   );
 }
 
-function password(state) {
-  const MAX_LENGTH = 32;
-
+function passwordToggle(state) {
   return html`
-    <div class="mb-2 px-1">
-      <div class="checkbox inline-block mr-3">
-        <input
-          id="add-password"
-          type="checkbox"
-          ${state.archive.password ? 'checked' : ''}
-          autocomplete="off"
-          onchange="${togglePasswordInput}"
-        />
-        <label for="add-password">
-          ${state.translate('addPassword')}
+    <div
+      id="checkbox-require-password"
+      class="checkbox inline-block mr-3 mb-1 mt-1"
+    >
+      <input
+        id="add-password"
+        type="checkbox"
+        ${state.archive.password ? 'checked' : ''}
+        autocomplete="off"
+        onchange="${togglePasswordInput}"
+      />
+      <label for="add-password">
+        ${state.translate('addPassword')}
+      </label>
+    </div>
+  `;
+
+  function togglePasswordInput(event) {
+    event.stopPropagation();
+    const checked = event.target.checked;
+
+    const input = document.getElementById('password-input');
+    const inputConfirm = document.getElementById('password-confirm');
+    const passwordContainer = document.getElementById('password-container');
+
+    if (checked) {
+      passwordContainer.classList.remove('invisible', 'hidden');
+      input.focus();
+    } else {
+      passwordContainer.classList.add('invisible');
+      passwordContainer.classList.add('hidden');
+      input.value = '';
+      inputConfirm.value = '';
+      document.getElementById('password-msg').textContent = '';
+      state.archive.password = null;
+
+      const pwdmsg = document.getElementById('password-msg');
+      pwdmsg.textContent = '';
+    }
+  }
+}
+
+function passwordShowToggle(state) {
+  return html`
+    <div id="checkbox-show-password" class="checkbox mr-3 mt-2">
+      <input
+        id="show-password"
+        type="checkbox"
+        autocomplete="off"
+        onchange="${toggleShowPassword}"
+      />
+      <label for="show-password">
+        ${state.translate('showPassword')}
+      </label>
+    </div>
+  `;
+
+  function toggleShowPassword(event) {
+    event.stopPropagation();
+    const checked = event.target.checked;
+    const input = document.getElementById('password-input');
+    const inputConfirm = document.getElementById('password-confirm');
+    if (checked) {
+      input.setAttribute('type', 'text');
+      inputConfirm.setAttribute('type', 'text');
+    } else {
+      input.setAttribute('type', 'password');
+      inputConfirm.setAttribute('type', 'password');
+    }
+  }
+}
+
+function password(state, emit) {
+  function passwordLabel(state, labelId, labelFor, label) {
+    return html`
+      <div id="${labelId}" class="w-24 inline-block">
+        <label for="${labelFor}">
+          ${state.translate(label)}
         </label>
       </div>
+    `;
+  }
+
+  function passwordInput(state, inputId) {
+    return html`
       <input
-        id="password-input"
-        class="${state.archive.password
-          ? ''
-          : 'invisible'} border rounded focus:border-blue-60 leading-normal my-1 py-1 px-2 h-8 dark:bg-grey-80"
+        id="${inputId}"
+        class="border rounded focus:border-blue-60 leading-normal my-1 py-1 px-2 h-8 dark:bg-grey-100 w-full"
         autocomplete="off"
-        maxlength="${MAX_LENGTH}"
+        maxlength="32"
         type="password"
         oninput="${inputChanged}"
         onfocus="${focused}"
         placeholder="${state.translate('unlockInputPlaceholder')}"
         value="${state.archive.password || ''}"
       />
+    `;
+  }
+
+  return html`
+    <div class="mb-2 px-1">
+      ${state.LIMITS.PASSWORD_REQUIRED ? '' : passwordToggle(state, emit)}
+
+      <div
+        id="password-container"
+        class="flex flex-col ${state.LIMITS.PASSWORD_REQUIRED ||
+        state.archive.password
+          ? ''
+          : 'invisible hidden'}"
+      >
+        <div class="flex flex-row items-center">
+          ${passwordLabel(
+            state,
+            'password-label',
+            'password-input',
+            'passwordLabel'
+          )}
+          <div class="flex-grow">
+            ${passwordInput(state, 'password-input')}
+          </div>
+        </div>
+
+        <div class="flex flex-row items-center">
+          ${passwordLabel(
+            state,
+            'password-confirm-label',
+            'password-confirm',
+            'confirmPassword'
+          )}
+          <div class="flex-grow">
+            ${passwordInput(state, 'password-confirm')}
+          </div>
+        </div>
+
+        <div>
+          ${passwordShowToggle(state)}
+        </div>
+      </div>
+
       <label
         id="password-msg"
         for="password-input"
@@ -63,35 +174,63 @@ function password(state) {
     </div>
   `;
 
-  function togglePasswordInput(event) {
-    event.stopPropagation();
-    const checked = event.target.checked;
-    const input = document.getElementById('password-input');
-    if (checked) {
-      input.classList.remove('invisible');
-      input.focus();
-    } else {
-      input.classList.add('invisible');
-      input.value = '';
-      document.getElementById('password-msg').textContent = '';
-      state.archive.password = null;
+  function validatePassword(password, passwordConfirm) {
+    const errors = passwordValidationErrors(password, passwordConfirm);
+    state.archive.passwordValid = !errors.length;
+  }
+
+  function passwordValidationErrors(password, passwordConfirm) {
+    const errors = passwordValidate(
+      password,
+      state.LIMITS.PASSWORD_REQUIREMENTS_LIST
+    );
+
+    let errorMessages = errors.map(error =>
+      state.translate(error.translationKey, error.args)
+    );
+
+    if (passwordConfirm != password) {
+      errorMessages.push(state.translate('passwordNotMatch'));
     }
+    return errorMessages;
   }
 
   function inputChanged() {
-    const passwordInput = document.getElementById('password-input');
-    const pwdmsg = document.getElementById('password-msg');
-    const password = passwordInput.value;
-    const length = password.length;
+    const passwordContainer = document.getElementById('password-container');
 
-    if (length === MAX_LENGTH) {
-      pwdmsg.textContent = state.translate('maxPasswordLength', {
-        length: MAX_LENGTH
-      });
-    } else {
-      pwdmsg.textContent = '';
-    }
+    const passwordInput = passwordContainer.querySelector('#password-input');
+    const password = passwordInput.value;
+
+    const pwdmsg = document.getElementById('password-msg');
+    const uploadBtn = document.getElementById('upload-btn');
+
+    const passwordConfirmInput = document.getElementById('password-confirm');
+    const passwordConfirm = passwordConfirmInput.value;
+
+    validatePassword(password, passwordConfirm);
     state.archive.password = password;
+
+    if (state.archive.passwordValid) {
+      pwdmsg.textContent = '';
+      toggleButton(uploadBtn, 'active');
+    } else {
+      let errorMessages = passwordValidationErrors(
+        password,
+        passwordConfirm
+      ).reduce((current, next) => current + '\r\n' + next, '');
+      pwdmsg.textContent = errorMessages;
+      toggleButton(uploadBtn, 'inactive');
+    }
+  }
+
+  function toggleButton(ele, action) {
+    if (action === 'active') {
+      ele.classList.remove('btn-inactive');
+      ele.removeAttribute('disabled');
+    } else {
+      ele.classList.add('btn-inactive');
+      ele.setAttribute('disabled', '');
+    }
   }
 
   function focused(event) {
@@ -267,7 +406,7 @@ module.exports = function(state, emit, archive) {
       try {
         await navigator.share({
           title: state.translate('-send-brand'),
-          text: `Download "${archive.name}" with Firefox Send: simple, safe file sharing`,
+          text: `Download "${archive.name}" with Sendr | Checkr: simple, safe file sharing`,
           //state.translate('shareMessage', { name }),
           url: archive.url
         });
@@ -277,6 +416,17 @@ module.exports = function(state, emit, archive) {
     }
   }
 };
+
+function clickUpload(state, emit) {
+  return function(event) {
+    window.scrollTo(0, 0);
+    event.preventDefault();
+    event.target.disabled = true;
+    if (!state.uploading && state.archive.passwordValid) {
+      emit('upload');
+    }
+  };
+}
 
 module.exports.wip = function(state, emit) {
   return html`
@@ -329,9 +479,12 @@ module.exports.wip = function(state, emit) {
       ${expiryOptions(state, emit)} ${password(state, emit)}
       <button
         id="upload-btn"
-        class="btn rounded-lg flex-shrink-0 focus:outline"
+        class="btn rounded-lg flex-shrink-0 focus:outline ${state.archive
+          .passwordValid == true
+          ? ''
+          : 'btn-inactive'}"
         title="${state.translate('uploadButton')}"
-        onclick="${upload}"
+        onclick="${clickUpload(state, emit)}"
       >
         ${state.translate('uploadButton')}
       </button>
@@ -346,15 +499,6 @@ module.exports.wip = function(state, emit) {
     event.target.nextElementSibling.firstElementChild.classList.remove(
       'outline'
     );
-  }
-
-  function upload(event) {
-    window.scrollTo(0, 0);
-    event.preventDefault();
-    event.target.disabled = true;
-    if (!state.uploading) {
-      emit('upload');
-    }
   }
 
   function add(event) {
@@ -436,11 +580,7 @@ module.exports.empty = function(state, emit) {
               event.stopPropagation();
               emit('signup-cta', 'drop');
             }}"
-          >
-            ${state.translate('signInSizeBump', {
-              size: bytes(state.LIMITS.MAX_FILE_SIZE)
-            })}
-          </button>
+          ></button>
         `;
   return html`
     <send-upload-area

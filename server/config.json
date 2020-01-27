@@ -1,0 +1,23 @@
+{
+  "password_requirements_list": [
+    {
+      "type": "maxLength", 
+      "length": 32
+    },
+    {
+      "type": "minLength", 
+      "length": 24
+    },
+    {
+      "type": "containsNumber", 
+      "count": 1
+    },
+    {
+      "type": "containsSpecials", 
+      "count": 1
+    }
+  ],
+  "anon_max_downloads": 100,
+  "download_counts": [1, 2, 3, 4, 5, 20],
+  "expire_times_seconds": [86400, 604800]
+}

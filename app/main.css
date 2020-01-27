@@ -55,6 +55,11 @@ body {
   @apply bg-blue-70;
 }
 
+.btn-inactive,
+.btn-inactive:hover {
+  @apply bg-blue-20;
+}
+
 .checkbox {
   @apply leading-normal;
   @apply select-none;
@@ -93,7 +98,6 @@ body {
   @apply bg-blue-50;
   @apply border-blue-50;
 
-  background-image: url('../assets/lock.svg');
   background-position: center;
   background-size: 1.25rem;
   background-repeat: no-repeat;
@@ -107,11 +111,26 @@ body {
   @apply bg-blue-50;
   @apply border-blue-50;
 
-  background-image: url('../assets/lock.svg');
   background-position: center;
   background-size: 1.25rem;
   background-repeat: no-repeat;
   cursor: auto;
+}
+
+#checkbox-require-password > input:checked + label::before {
+  background-image: url('../assets/lock.svg');
+}
+
+#checkbox-require-password > input:disabled + label::before {
+  background-image: url('../assets/lock.svg');
+}
+
+#checkbox-show-password > input:checked + label::before {
+  background-image: url('../assets/white-checkmark.png');
+}
+
+#checkbox-show-password > input:disabled + label::before {
+  background-image: url('../assets/white-checkmark.png');
 }
 
 details {
@@ -154,7 +173,7 @@ footer li:hover {
 }
 
 .link-blue {
-  @apply text-blue-60;
+  @apply text-blue;
 }
 
 .link-blue:hover {
@@ -173,6 +192,7 @@ footer li:hover {
 .intro {
   max-width: 100%;
   height: unset;
+  overflow: hidden;
 }
 
 .main {
@@ -198,6 +218,10 @@ footer li:hover {
   height: 32px;
   width: 100px;
   flex-shrink: 0;
+}
+
+#password-msg {
+  white-space: break-spaces;
 }
 
 #password-msg::after {
@@ -283,10 +307,9 @@ select {
   }
 
   .intro {
-    max-width: unset;
+    max-width: 100%;
     height: unset;
-    margin-bottom: -3rem;
-    margin-right: -7rem;
+    margin-bottom: -0.5rem;
   }
 
   .main {
@@ -299,55 +322,6 @@ select {
     min-height: 36rem;
     max-height: 42rem;
     width: calc(100% - 3rem);
-  }
-}
-
-@screen dark {
-  body {
-    @apply text-grey-10;
-
-    background-image: unset;
-  }
-
-  .btn {
-    @apply bg-blue-40;
-    @apply text-white;
-  }
-
-  .btn:hover {
-    @apply bg-blue-50;
-  }
-
-  .btn:focus {
-    @apply bg-blue-50;
-  }
-
-  .link-blue {
-    @apply text-blue-40;
-  }
-
-  .link-blue:hover {
-    @apply text-blue-50;
-  }
-
-  .link-blue:focus {
-    @apply text-blue-50;
-  }
-
-  .main > section {
-    @apply bg-grey-90;
-  }
-
-  .mozilla-logo {
-    background-color: white;
-    border: 1px solid white;
-  }
-
-  @screen md {
-    .main > section {
-      @apply border;
-      @apply border-grey-80;
-    }
   }
 }
 
@@ -437,3 +411,6 @@ select {
 }
 
 /* end signin button color experiment */
+
+/* include optional override css */
+@import './override.css';
