@@ -1,5 +1,5 @@
 # Firefox Send is a brand name and should not be localized.
-title = Firefox Ipadala
+title = Firefox Send
 siteFeedback = Feedback
 importingFile = Importing…
 encryptingFile = Encrypting…
@@ -33,8 +33,8 @@ footerLinkLegal = Legal
 footerLinkPrivacy = Privacy
 footerLinkCookies = Mga cookie
 passwordTryAgain = Maling password. Subukan muli.
-javascriptRequired = Nangangailangan ang JavaScript sa JavaScript
-whyJavascript = Bakit ang JavaScript ay nangangailangan ng JavaScript?
+javascriptRequired = Nangangailangan ang Firefox Send ng JavaScript
+whyJavascript = Bakit ang Firefox Send ay nangangailangan ng JavaScript?
 enableJavascript = Mangyaring paganahin ang JavaScript at subukan muli.
 # A short representation of a countdown timer containing the number of hours and minutes remaining as digits, example "13h 47m"
 expiresHoursMinutes = { $hours }h { $minutes }m
@@ -92,6 +92,7 @@ totalSize = Kabuuang sukat: { $size }
 copyLinkDescription = Kopyahin ang link upang ibahagi ang iyong file:
 copyLinkButton = Kopyahin ang link
 downloadTitle = I-download ang mga file
+expiredTitle = Ang link na ito ay nag-expire.
 downloadFirefox = I-download { -firefox }
 legalTitle = { -send-short-brand } Abiso sa Privacy
 legalDateStamp = Bersyon 1.0, petsa ng Marso 12, 2019
